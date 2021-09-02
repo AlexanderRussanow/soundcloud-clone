@@ -9,11 +9,11 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { TrackService } from './track.service';
+import { CreateTrackDto } from './dto/create-track.dto';
 import { ObjectId } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { CreateTrackDto } from './dto/create-track.dto';
-import { TrackService } from './track.service';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('/tracks')
 export class TrackController {
@@ -36,14 +36,14 @@ export class TrackController {
     return this.trackService.getAll(count, offset);
   }
 
-  @Get(':id')
-  getOne(@Param('id') id: ObjectId) {
-    return this.trackService.getOne(id);
-  }
-
   @Get('/search')
   search(@Query('query') query: string) {
     return this.trackService.search(query);
+  }
+
+  @Get(':id')
+  getOne(@Param('id') id: ObjectId) {
+    return this.trackService.getOne(id);
   }
 
   @Delete(':id')
