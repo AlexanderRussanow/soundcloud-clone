@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Track, TrackDocument } from './schemas/track.schema';
 import { Model, ObjectId } from 'mongoose';
-import { Comment, CommentDocument } from './schemas/comment.schema';
-import { CreateTrackDto } from './dto/create-track.dto';
+import { FileService, FileType } from './../files/file.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { FileService, FileType } from '../files/file.service';
+import { CreateTrackDto } from './dto/create-track.dto';
+import { Comment, CommentDocument } from './schemas/comment.schema';
+import { Track, TrackDocument } from './schemas/track.schema';
 
 @Injectable()
 export class TrackService {
@@ -27,17 +27,17 @@ export class TrackService {
     return track;
   }
 
+  async getOne(id: ObjectId): Promise<Track> {
+    const track = await this.trackModel.findById(id).populate('comments');
+    return track;
+  }
+
   async getAll(count = 10, offset = 0): Promise<Track[]> {
     const tracks = await this.trackModel
       .find()
       .skip(Number(offset))
       .limit(Number(count));
     return tracks;
-  }
-
-  async getOne(id: ObjectId): Promise<Track> {
-    const track = await this.trackModel.findById(id).populate('comments');
-    return track;
   }
 
   async delete(id: ObjectId): Promise<ObjectId> {
@@ -61,7 +61,7 @@ export class TrackService {
 
   async search(query: string): Promise<Track[]> {
     const tracks = await this.trackModel.find({
-      name: { $regex: new RegExp(query, 'i') },
+      name: { $regex: new RegExp(query) },
     });
     return tracks;
   }

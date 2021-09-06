@@ -5,7 +5,7 @@ type PropsType = {
   activeStep: number;
 };
 
-const steps = ["Fill in information", "Upload album cover", "Upload track"];
+const steps = ["Fill in track information", "Upload track cover", "Upload track"];
 
 const StapWrapper: React.FC<PropsType> = ({ activeStep, children }) => {
   return (

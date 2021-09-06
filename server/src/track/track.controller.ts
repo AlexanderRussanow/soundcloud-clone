@@ -9,11 +9,11 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { TrackService } from './track.service';
-import { CreateTrackDto } from './dto/create-track.dto';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ObjectId } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { CreateTrackDto } from './dto/create-track.dto';
+import { TrackService } from './track.service';
 
 @Controller('/tracks')
 export class TrackController {
@@ -60,4 +60,7 @@ export class TrackController {
   listen(@Param('id') id: ObjectId) {
     return this.trackService.listen(id);
   }
+
+  
+  
 }

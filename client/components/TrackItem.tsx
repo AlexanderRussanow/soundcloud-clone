@@ -2,8 +2,8 @@ import { Card, Grid, IconButton } from "@material-ui/core";
 import { Delete, Pause, PlayArrow } from "@material-ui/icons";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
+import { useAction } from "../hooks/useAction";
 import { ITrack } from "../types/track";
-// import styles from '../styles/TrackItem.module.scss'
 
 type PropsType = {
   track: ITrack;
@@ -12,10 +12,16 @@ type PropsType = {
 
 const TrackItem: React.FC<PropsType> = ({ track, active = true }) => {
   const router = useRouter();
+  const {playTrack, pauseTrack, setActiveTrack} = useAction()
+
+  const play = (e) => {
+    e.stopPropagation()
+    setActiveTrack(track)
+    playTrack()
+  }
   return (
     <>
       <Card
-        // className={styles.track}
         onClick={() => router.push("/tracks/" + track._id)}
         style={{
           margin: 20,
@@ -25,7 +31,7 @@ const TrackItem: React.FC<PropsType> = ({ track, active = true }) => {
           cursor: 'pointer'
         }}
       >
-        <IconButton onClick={(e) => e.stopPropagation()}>{active ? <Pause /> : <PlayArrow />}</IconButton>
+        <IconButton onClick={play}>{active ? <Pause /> : <PlayArrow />}</IconButton>
         <img src={track.picture} alt="" width={70} height={70} />
         <Grid
           container
